@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "nombre": "Licenciado Patitas",
+        "rol": "Lead Developer",
+        "avatar": "https://i.pinimg.com/222x/b6/06/8e/b6068ea26c9c27e691cab0a691dc2a54.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "Mister Miau",
+        "rol": "UI/UX Designer",
+        "avatar": "https://i.pinimg.com/236x/bf/c7/2f/bfc72f7aac6c0290de0ddb30363de0f3.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Ingeniero Peludin",
+        "rol": "Frontend QA",
+        "avatar": "https://ih1.redbubble.net/image.3206199162.2094/flat,750x,075,f-pad,750x1000,f8f8f8.webp"
+    }
+]

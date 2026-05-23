@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "nombre": "Pelota interactiva Inteligente",
+        "precio": 5000,
+        "imagen": "https://http2.mlstatic.com/D_NQ_NP_735227-MLA90041753176_082025-O.webp",
+        "destacado": true
+    },
+    {
+        "id": 2,
+        "nombre": "Rascadores para gatos",
+        "precio": 25.000,
+        "imagen": "https://petproducts.com.cn/wp-content/uploads/2026/03/Cat-Scratcher.webp",
+        "destacado": true
+    },
+    {
+        "id": 3,
+        "nombre": "Transportadora",
+        "precio": 15.000,
+        "imagen": "https://http2.mlstatic.com/D_NQ_NP_807774-MLA81306538393_122024-O.webp",
+        "destacado": false
+    },
+    {
+        "id": 4,
+        "nombre": "Comedero doble",
+        "precio": 7000,
+        "imagen": "https://www.petmarket.com.ar/wp-content/uploads/2024/06/Comedero-Bowl-Doble-para-gato-2-1.jpg",
+        "destacado": false
+    }
+]
