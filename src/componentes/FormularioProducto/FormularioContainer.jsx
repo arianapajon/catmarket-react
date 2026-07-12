@@ -1,85 +1,144 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function FormularioContainer({ alAgregarProducto }) {
+export default function FormularioContainer({
+    alAgregarProducto,
+    productoEditar,
+    setProductoEditar,
+    editarProducto
+}) {
+
     const [datosForm, setDatosForm] = useState({
-        nombre: '',
-        precio: '',
-        stock: ''
+        nombre: "",
+        precio: "",
+        stock: ""
     });
 
     const [imagenFile, setImagenFile] = useState(null);
     const [subiendo, setSubiendo] = useState(false);
     const [hoverBtn, setHoverBtn] = useState(false);
 
+    useEffect(() => {
+
+        if (productoEditar) {
+
+            setDatosForm({
+                nombre: productoEditar.nombre,
+                precio: productoEditar.precio,
+                stock: productoEditar.stock || ""
+            });
+
+        } else {
+
+            setDatosForm({
+                nombre: "",
+                precio: "",
+                stock: ""
+            });
+
+        }
+
+    }, [productoEditar]);
+
     const manejarCambio = (e) => {
+
         const { name, value } = e.target;
 
         setDatosForm({
             ...datosForm,
             [name]: value
         });
+
     };
 
     const manejarImagen = (e) => {
+
         setImagenFile(e.target.files[0]);
+
     };
 
     const manejarSubmit = async (e) => {
+
         e.preventDefault();
 
-        if (!imagenFile) {
-            alert('Seleccioná una imagen');
+        if (!imagenFile && !productoEditar) {
+            alert("Seleccioná una imagen.");
             return;
         }
 
         setSubiendo(true);
 
-        const formData = new FormData();
-        formData.append('image', imagenFile);
-
-        const apiKey = '39f1bb239c5af860fbef882042aaa618';
-
         try {
-            const respuesta = await fetch(
-                `https://api.imgbb.com/1/upload?key=${apiKey}`,
-                {
-                    method: 'POST',
-                    body: formData
+
+            let imagenURL = productoEditar?.imagen || "";
+
+            if (imagenFile) {
+
+                const formData = new FormData();
+                formData.append("image", imagenFile);
+
+                const respuesta = await fetch(
+                    "https://api.imgbb.com/1/upload?key=39f1bb239c5af860fbef882042aaa618",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                const data = await respuesta.json();
+
+                if (!data.success) {
+                    throw new Error("No se pudo subir la imagen.");
                 }
-            );
 
-            const data = await respuesta.json();
+                imagenURL = data.data.url;
+            }
 
-            if (data.success) {
-                const nuevoProducto = {
-                    nombre: datosForm.nombre,
-                    precio: Number(datosForm.precio),
-                    stock: Number(datosForm.stock),
-                    imagen: data.data.url,
-                    destacado: false
-                };
+            const producto = {
+                nombre: datosForm.nombre,
+                precio: Number(datosForm.precio),
+                stock: Number(datosForm.stock),
+                imagen: imagenURL,
+                destacado: false
+            };
 
-                alAgregarProducto(nuevoProducto);
+            if (productoEditar) {
 
-                alert('Producto agregado correctamente');
-
-                setDatosForm({
-                    nombre: '',
-                    precio: '',
-                    stock: ''
+                await editarProducto({
+                    ...productoEditar,
+                    ...producto
                 });
 
-                setImagenFile(null);
-                e.target.reset();
-            }
-        } catch (error) {
-            alert('Ocurrió un error al subir la imagen');
-        } finally {
-            setSubiendo(false);
-        }
-    };
+                setProductoEditar(null);
 
-    return (
+            } else {
+
+                await alAgregarProducto(producto);
+
+            }
+
+            setDatosForm({
+                nombre: "",
+                precio: "",
+                stock: ""
+            });
+
+            setImagenFile(null);
+
+            e.target.reset();
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Ocurrió un error.");
+
+        } finally {
+
+            setSubiendo(false);
+
+        }
+
+    };
+        return (
         <section
             style={{
                 background:
@@ -89,47 +148,56 @@ export default function FormularioContainer({ alAgregarProducto }) {
                 borderRadius: '28px',
                 maxWidth: '700px',
                 margin: '3rem auto',
-                boxShadow:
-                    '0 15px 35px rgba(90, 150, 60, 0.18)',
-                border: '1px solid rgba(139, 195, 74, 0.25)',
-                fontFamily: "'Poppins', sans-serif",
-                transition: '0.3s ease'
+                boxShadow: '0 15px 35px rgba(90,150,60,0.18)',
+                border: '1px solid rgba(139,195,74,0.25)',
+                fontFamily: "'Poppins', sans-serif"
             }}
         >
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+
+            <div
+                style={{
+                    textAlign: "center",
+                    marginBottom: "2.5rem"
+                }}
+            >
+
                 <h2
                     style={{
                         margin: 0,
-                        fontSize: '2.3rem',
-                        color: '#4b7c1f',
-                        fontWeight: '700',
-                        letterSpacing: '0.5px'
+                        fontSize: "2.3rem",
+                        color: "#4b7c1f"
                     }}
                 >
-                    Crear Producto
+                    {productoEditar
+                        ? "Editar Producto"
+                        : "Crear Producto"}
                 </h2>
 
                 <p
                     style={{
-                        marginTop: '0.7rem',
-                        color: '#6d7f60',
-                        fontSize: '0.98rem'
+                        marginTop: ".7rem",
+                        color: "#6d7f60"
                     }}
                 >
-                    Agregá productos a tu catálogo de manera rápida
+                    {productoEditar
+                        ? "Modificá la información del producto."
+                        : "Agregá productos a tu catálogo."}
                 </p>
+
             </div>
 
             <form
                 onSubmit={manejarSubmit}
                 style={{
-                    display: 'grid',
-                    gap: '1.5rem'
+                    display: "grid",
+                    gap: "1.5rem"
                 }}
             >
+
                 <div>
+
                     <label style={estilosLabel}>
-                        Nombre del producto
+                        Nombre
                     </label>
 
                     <input
@@ -137,22 +205,22 @@ export default function FormularioContainer({ alAgregarProducto }) {
                         name="nombre"
                         value={datosForm.nombre}
                         onChange={manejarCambio}
-                        placeholder="Ej: Collar elástico"
                         required
                         style={estilosInput}
                     />
+
                 </div>
 
                 <div
-                style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-            columnGap: '1.8rem',
-            rowGap: '1rem',
-            alignItems: 'center'
-            }}
-            >
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "1.5rem"
+                    }}
+                >
+
                     <div>
+
                         <label style={estilosLabel}>
                             Precio
                         </label>
@@ -162,13 +230,14 @@ export default function FormularioContainer({ alAgregarProducto }) {
                             name="precio"
                             value={datosForm.precio}
                             onChange={manejarCambio}
-                            placeholder="Ej: 25000"
                             required
                             style={estilosInput}
                         />
+
                     </div>
 
                     <div>
+
                         <label style={estilosLabel}>
                             Stock
                         </label>
@@ -178,36 +247,34 @@ export default function FormularioContainer({ alAgregarProducto }) {
                             name="stock"
                             value={datosForm.stock}
                             onChange={manejarCambio}
-                            placeholder="Ej: 8"
                             required
                             style={estilosInput}
                         />
+
                     </div>
+
                 </div>
 
                 <div>
+
                     <label style={estilosLabel}>
-                        Imagen del producto
+                        Imagen
                     </label>
 
                     <input
-                    type="file"
-                    accept="image/*"
-                    onChange={manejarImagen}
-                    required
-                    style={{
-                    width: '100%',
-                    padding: '0.9rem',
-                    borderRadius: '14px',
-                    border: '2px dotted #8bc34a',
-                    backgroundColor: '#fff',
-                    cursor: 'pointer',
-                    color: '#5f6f52',
-                    fontSize: '0.92rem',
-                    boxSizing: 'border-box',
-                    transition: 'all 0.3s ease'
-                    }}
+                        type="file"
+                        accept="image/*"
+                        onChange={manejarImagen}
+                        required={!productoEditar}
+                        style={{
+                            width: "100%",
+                            padding: ".9rem",
+                            borderRadius: "14px",
+                            border: "2px dotted #8bc34a",
+                            boxSizing: "border-box"
+                        }}
                     />
+
                 </div>
 
                 <button
@@ -216,53 +283,51 @@ export default function FormularioContainer({ alAgregarProducto }) {
                     onMouseEnter={() => setHoverBtn(true)}
                     onMouseLeave={() => setHoverBtn(false)}
                     style={{
-                        background: subiendo
-                            ? '#9e9e9e'
-                            : 'linear-gradient(135deg, #8bc34a, #5e9c2d)',
-                        color: '#fff',
-                        border: 'none',
-                        padding: '1rem',
-                        borderRadius: '16px',
-                        cursor: 'pointer',
-                        fontWeight: '700',
-                        fontSize: '1rem',
-                        letterSpacing: '0.8px',
-                        transition: 'all 0.3s ease',
-                        transform: hoverBtn
-                            ? 'translateY(-3px)'
-                            : 'translateY(0)',
-                        boxShadow: hoverBtn
-                            ? '0 10px 20px rgba(94, 156, 45, 0.35)'
-                            : '0 4px 10px rgba(94, 156, 45, 0.2)'
+                        background:
+                            subiendo
+                                ? "#9e9e9e"
+                                : "linear-gradient(135deg,#8bc34a,#5e9c2d)",
+                        color: "#fff",
+                        border: "none",
+                        padding: "1rem",
+                        borderRadius: "16px",
+                        cursor: "pointer",
+                        fontWeight: "700",
+                        transform:
+                            hoverBtn
+                                ? "translateY(-3px)"
+                                : "translateY(0)",
+                        transition: ".3s"
                     }}
                 >
+
                     {subiendo
-                        ? 'Subiendo producto...'
-                        : 'Guardar Producto'}
+                        ? "Guardando..."
+                        : productoEditar
+                            ? "Actualizar Producto"
+                            : "Guardar Producto"}
+
                 </button>
+
             </form>
+
         </section>
     );
+
 }
 
 const estilosLabel = {
-    display: 'block',
-    marginBottom: '0.6rem',
-    color: '#486b25',
-    fontWeight: '600',
-    fontSize: '0.95rem'
+    display: "block",
+    marginBottom: ".6rem",
+    color: "#486b25",
+    fontWeight: "600"
 };
 
 const estilosInput = {
-    width: '100%',
-    padding: '1rem',
-    borderRadius: '14px',
-    border: '1px solid #c5df9f',
-    outline: 'none',
-    backgroundColor: '#fff',
-    fontSize: '0.95rem',
-    color: '#3f4d35',
-    transition: 'all 0.25s ease',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-    boxSizing: 'border-box'
+    width: "100%",
+    padding: "1rem",
+    borderRadius: "14px",
+    border: "1px solid #c5df9f",
+    outline: "none",
+    boxSizing: "border-box"
 };

@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { CartContext } from '../../context/CartContext';
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Header({
     alHacerClicInicio,
     alHacerClicProductos,
     alHacerClicEquipo
 }) {
+    const { cart } = useContext(CartContext);
     const [hovered, setHovered] = useState('');
+    const { user, cerrarSesion } = useContext(AuthContext);
 
     return (
         <header
@@ -64,6 +68,14 @@ export default function Header({
                 }}
             >
                 <button
+                style={{
+                ...estiloBoton,
+                cursor: 'default'
+                }}
+                >
+                🛒 Carrito ({cart.length})
+                </button>
+                <button
                     onClick={alHacerClicInicio}
                     onMouseEnter={() => setHovered('inicio')}
                     onMouseLeave={() => setHovered('')}
@@ -104,6 +116,27 @@ export default function Header({
                 >
                     Equipo
                 </button>
+                {
+    user ? (
+        <>
+            <span
+                style={{
+                    color: "#fff",
+                    fontWeight: "600"
+                }}
+            >
+                {user.email}
+            </span>
+
+            <button
+                onClick={cerrarSesion}
+                style={estiloBoton}
+            >
+                Cerrar sesión
+            </button>
+        </>
+    ) : null
+}
             </nav>
         </header>
     );

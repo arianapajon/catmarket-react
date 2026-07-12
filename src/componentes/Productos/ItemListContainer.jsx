@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { CartContext } from '../../context/CartContext';
 
 export default function ItemListContainer({
     productos,
     cargando,
-    error
+    error,
+    eliminarProducto,
+    setProductoEditar
 }) {
+    const { addToCart } = useContext(CartContext);
     const [hoveredCard, setHoveredCard] = useState(null);
 
     if (cargando) {
@@ -183,6 +187,7 @@ export default function ItemListContainer({
                                 </p>
 
                                 <button
+                                    onClick={() => addToCart(prod)}
                                     style={{
                                         width: '100%',
                                         padding: '1rem',
@@ -204,6 +209,38 @@ export default function ItemListContainer({
                                 >
                                     Comprar Producto
                                 </button>
+                                <button
+    onClick={() => setProductoEditar(prod)}
+    style={{
+        width: "100%",
+        marginTop: "10px",
+        padding: "1rem",
+        border: "none",
+        borderRadius: "16px",
+        background: "#1976d2",
+        color: "#fff",
+        cursor: "pointer",
+        fontWeight: "700"
+    }}
+>
+    Editar
+</button>
+                                <button
+    onClick={() => eliminarProducto(prod.id)}
+    style={{
+        width: "100%",
+        marginTop: "10px",
+        padding: "1rem",
+        border: "none",
+        borderRadius: "16px",
+        background: "#d62828",
+        color: "#fff",
+        cursor: "pointer",
+        fontWeight: "700"
+    }}
+>
+    Eliminar
+</button>
                             </div>
                         </article>
                     );
