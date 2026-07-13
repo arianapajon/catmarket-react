@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { auth } from "../firebase/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const registrarUsuario = async (e) => {
 
@@ -25,6 +28,8 @@ function Register() {
 
             setEmail("");
             setPassword("");
+
+            navigate("/login");
 
         } catch (error) {
 
@@ -83,13 +88,33 @@ function Register() {
                     style={{
                         width: "100%",
                         padding: "12px",
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        marginBottom: "20px"
                     }}
                 >
                     Registrarse
                 </button>
 
             </form>
+
+            <p
+                style={{
+                    textAlign: "center",
+                    margin: 0
+                }}
+            >
+                ¿Ya tenés cuenta?{" "}
+                <Link
+                    to="/login"
+                    style={{
+                        color: "#1976d2",
+                        fontWeight: "bold",
+                        textDecoration: "none"
+                    }}
+                >
+                    Iniciá sesión
+                </Link>
+            </p>
 
         </div>
 

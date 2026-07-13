@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
 
@@ -24,7 +24,7 @@ function Login() {
             alert("¡Bienvenido!");
 
             navigate("/admin");
-            
+
             console.log(usuario.user);
 
         } catch (error) {
@@ -91,6 +91,36 @@ function Login() {
                 </button>
 
             </form>
+
+            <div
+                style={{
+                    marginTop: "20px",
+                    textAlign: "center"
+                }}
+            >
+                <span
+                    style={{
+                        color: "#666"
+                    }}
+                >
+                    ¿No tenés cuenta?
+                </span>
+
+                <br />
+
+                <Link
+                    to="/register"
+                    style={{
+                        display: "inline-block",
+                        marginTop: "10px",
+                        textDecoration: "none",
+                        color: "#4f772d",
+                        fontWeight: "600"
+                    }}
+                >
+                    Crear una cuenta
+                </Link>
+            </div>
 
         </div>
 
