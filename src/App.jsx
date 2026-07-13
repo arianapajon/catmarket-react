@@ -255,8 +255,14 @@ const totalPaginas = Math.ceil(
                 cargando={cargando}
                 error={error}
                 abrirModalEliminar={abrirModalEliminar}
-                setProductoEditar={setProductoEditar}
                 esAdmin={false}
+                setProductoEditar={(producto) => {
+    setProductoEditar(producto);
+
+    inicioRef.current?.scrollIntoView({
+        behavior: "smooth"
+    });
+}}
             />
 
         </Col>

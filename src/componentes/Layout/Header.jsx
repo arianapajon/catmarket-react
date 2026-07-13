@@ -8,150 +8,308 @@ import {
     FaUsers,
     FaSignOutAlt
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
 
 export default function Header({
     alHacerClicInicio,
     alHacerClicProductos,
     alHacerClicEquipo
 }) {
-    const { cart } = useContext(CartContext);
-    const [hovered, setHovered] = useState('');
+
+    const {
+        cart,
+        removeFromCart,
+        clearCart
+    } = useContext(CartContext);
+
     const { user, cerrarSesion } = useContext(AuthContext);
 
+    const [hovered, setHovered] = useState('');
+    const [mostrarCarrito, setMostrarCarrito] = useState(false);
+
     return (
-        <header
-            style={{
-                background:
-                    'linear-gradient(135deg, rgba(79,119,45,0.96), rgba(144,169,85,0.95))',
-                backdropFilter: 'blur(12px)',
-                padding: '1rem 3rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                position: 'sticky',
-                top: 0,
-                zIndex: 1000,
-                boxShadow:
-                    '0 8px 25px rgba(0,0,0,0.12)',
-                borderBottom:
-                    '1px solid rgba(255,255,255,0.12)',
-                fontFamily: "'Poppins', sans-serif"
-            }}
-        >
-            {/* LOGO */}
-            <div>
-                <h1
-                    onClick={alHacerClicInicio}
-                    style={{
-                        margin: 0,
-                        color: '#ffffff',
-                        cursor: 'pointer',
-                        fontSize: '2rem',
-                        fontWeight: '700',
-                        letterSpacing: '1px',
-                        transition: '0.3s ease',
-                        textShadow:
-                            '0 3px 10px rgba(0,0,0,0.18)'
-                    }}
-                >
-                    <span
-                    style={{
-                    fontSize: '2.1rem',
-                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
-                    }}
-                    >
-                    🐱
-                    </span>
-                    CatMarket
-                </h1>
-            </div>
-
-            {/* NAV */}
-            <nav
-                style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    alignItems: 'center'
-                }}
-            >
-                <button
-                style={{
-                ...estiloBoton,
-                cursor: 'default'
-                }}
-                >
-                <FaShoppingCart />
-    {" "}Carrito ({cart.length})
-                </button>
-                <button
-                    onClick={alHacerClicInicio}
-                    onMouseEnter={() => setHovered('inicio')}
-                    onMouseLeave={() => setHovered('')}
-                    style={{
-                        ...estiloBoton,
-                        ...(hovered === 'inicio'
-                            ? estiloHover
-                            : {})
-                    }}
-                >
-                    <FaHome />
-    {" "}Inicio
-                </button>
-
-                <button
-                    onClick={alHacerClicProductos}
-                    onMouseEnter={() => setHovered('productos')}
-                    onMouseLeave={() => setHovered('')}
-                    style={{
-                        ...estiloBoton,
-                        ...(hovered === 'productos'
-                            ? estiloHover
-                            : {})
-                    }}
-                >
-                    <FaBoxOpen />
-    {" "}Productos
-                </button>
-
-                <button
-                    onClick={alHacerClicEquipo}
-                    onMouseEnter={() => setHovered('equipo')}
-                    onMouseLeave={() => setHovered('')}
-                    style={{
-                        ...estiloBoton,
-                        ...(hovered === 'equipo'
-                            ? estiloHover
-                            : {})
-                    }}
-                >
-                    <FaUsers />
-    {" "}Equipo
-                </button>
-                {
-    user ? (
         <>
-            <span
+
+            <header
                 style={{
-                    color: "#fff",
-                    fontWeight: "600"
+                    background:
+                        'linear-gradient(135deg, rgba(79,119,45,0.96), rgba(144,169,85,0.95))',
+                    backdropFilter: 'blur(12px)',
+                    padding: '1rem 3rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 1000,
+                    boxShadow:
+                        '0 8px 25px rgba(0,0,0,0.12)',
+                    borderBottom:
+                        '1px solid rgba(255,255,255,0.12)',
+                    fontFamily: "'Poppins', sans-serif"
                 }}
             >
-                {user.email}
-            </span>
 
-            <button
-                onClick={cerrarSesion}
-                style={estiloBoton}
+                <div>
+
+                    <h1
+                        onClick={alHacerClicInicio}
+                        style={{
+                            margin: 0,
+                            color: '#ffffff',
+                            cursor: 'pointer',
+                            fontSize: '2rem',
+                            fontWeight: '700',
+                            letterSpacing: '1px',
+                            textShadow:
+                                '0 3px 10px rgba(0,0,0,0.18)'
+                        }}
+                    >
+                        🐱 CatMarket
+                    </h1>
+
+                </div>
+
+                <nav
+                    style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        alignItems: 'center'
+                    }}
+                >
+
+                    <button
+                        onClick={() => setMostrarCarrito(true)}
+                        style={estiloBoton}
+                    >
+                        <FaShoppingCart />
+                        {" "}
+                        Carrito ({cart.length})
+                    </button>
+
+                    <button
+                        onClick={alHacerClicInicio}
+                        onMouseEnter={() => setHovered("inicio")}
+                        onMouseLeave={() => setHovered("")}
+                        style={{
+                            ...estiloBoton,
+                            ...(hovered === "inicio"
+                                ? estiloHover
+                                : {})
+                        }}
+                    >
+                        <FaHome />
+                        {" "}
+                        Inicio
+                    </button>
+
+                    <button
+                        onClick={alHacerClicProductos}
+                        onMouseEnter={() => setHovered("productos")}
+                        onMouseLeave={() => setHovered("")}
+                        style={{
+                            ...estiloBoton,
+                            ...(hovered === "productos"
+                                ? estiloHover
+                                : {})
+                        }}
+                    >
+                        <FaBoxOpen />
+                        {" "}
+                        Productos
+                    </button>
+
+                    <button
+                        onClick={alHacerClicEquipo}
+                        onMouseEnter={() => setHovered("equipo")}
+                        onMouseLeave={() => setHovered("")}
+                        style={{
+                            ...estiloBoton,
+                            ...(hovered === "equipo"
+                                ? estiloHover
+                                : {})
+                        }}
+                    >
+                        <FaUsers />
+                        {" "}
+                        Equipo
+                    </button>
+
+                    {
+                        user ? (
+                            <>
+
+                                <span
+                                    style={{
+                                        color: "#fff",
+                                        fontWeight: "600"
+                                    }}
+                                >
+                                    {user.email}
+                                </span>
+
+                                <button
+                                    onClick={cerrarSesion}
+                                    style={estiloBoton}
+                                >
+                                    <FaSignOutAlt />
+                                    {" "}
+                                    Cerrar sesión
+                                </button>
+
+                            </>
+                        ) : (
+
+                            <Link
+                                to="/login"
+                                style={{
+                                    ...estiloBoton,
+                                    textDecoration: "none",
+                                    display: "flex",
+                                    alignItems: "center"
+                                }}
+                            >
+                                Iniciar sesión
+                            </Link>
+
+                        )
+                    }
+
+                </nav>
+
+            </header>
+                        <Modal
+                show={mostrarCarrito}
+                onHide={() => setMostrarCarrito(false)}
+                centered
             >
-                <FaSignOutAlt />
-    {" "}Cerrar sesión
-            </button>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        🛒 Mi carrito
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+
+                    {cart.length === 0 ? (
+
+                        <p style={{ margin: 0 }}>
+                            Tu carrito está vacío.
+                        </p>
+
+                    ) : (
+
+                        <>
+                            {cart.map((producto) => (
+
+                                <div
+                                    key={producto.id}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        marginBottom: "15px"
+                                    }}
+                                >
+
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "10px"
+                                        }}
+                                    >
+
+                                        <img
+                                            src={producto.imagen}
+                                            alt={producto.nombre}
+                                            style={{
+                                                width: "55px",
+                                                height: "55px",
+                                                objectFit: "cover",
+                                                borderRadius: "10px"
+                                            }}
+                                        />
+
+                                        <div>
+
+                                            <strong>
+                                                {producto.nombre}
+                                            </strong>
+
+                                            <p
+                                                style={{
+                                                    margin: 0,
+                                                    color: "#4f772d",
+                                                    fontWeight: "600"
+                                                }}
+                                            >
+                                                ${producto.precio}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <Button
+                                        variant="danger"
+                                        size="sm"
+                                        onClick={() =>
+                                            removeFromCart(producto.id)
+                                        }
+                                    >
+                                        Eliminar
+                                    </Button>
+
+                                </div>
+
+                            ))}
+
+                            <hr />
+
+                            <h5>
+                                Total: $
+                                {cart.reduce(
+                                    (total, producto) =>
+                                        total + producto.precio,
+                                    0
+                                )}
+                            </h5>
+
+                        </>
+
+                    )}
+
+                </Modal.Body>
+
+                <Modal.Footer>
+
+                    <Button
+                        variant="secondary"
+                        onClick={() => setMostrarCarrito(false)}
+                    >
+                        Cerrar
+                    </Button>
+
+                    {cart.length > 0 && (
+
+                        <Button
+                            variant="warning"
+                            onClick={clearCart}
+                        >
+                            Vaciar carrito
+                        </Button>
+
+                    )}
+
+                </Modal.Footer>
+
+            </Modal>
+
         </>
-    ) : null
-}
-            </nav>
-        </header>
     );
+
 }
 
 const estiloBoton = {
