@@ -1,16 +1,94 @@
-# React + Vite
+# 🐱 CatMarket
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CatMarket es una aplicación web de e-commerce desarrollada con React y Firebase, orientada a la venta de accesorios para gatos 🐱
 
-Currently, two official plugins are available:
+El proyecto fue realizado aplicando conceptos de desarrollo Frontend moderno, gestión de estado global, autenticación de usuarios y operaciones CRUD sobre una base de datos en la nube.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Tecnologías utilizadas:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- React Router DOM
+- Firebase Firestore
+- Firebase Authentication
+- React Bootstrap
+- Bootstrap
+- Styled Components
+- React Icons
+- React Helmet
+- Context API
+- ImgBB API
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Funcionalidades:
+
+### Usuarios
+
+- Registro de usuarios.
+- Inicio de sesión mediante Firebase Authentication.
+- Protección de rutas privadas.
+- Panel de administración accesible únicamente para usuarios autenticados.
+
+### Productos
+
+- Listado de productos almacenados en Firebase.
+- Agregar nuevos productos.
+- Editar productos existentes.
+- Eliminar productos mediante un modal de confirmación.
+- Validación de formularios.
+- Subida de imágenes utilizando ImgBB.
+
+### Carrito
+
+- Agregar productos al carrito.
+- Eliminar productos del carrito.
+- Vaciar carrito.
+- Estado global administrado mediante Context API.
+
+### Catálogo
+
+- Barra de búsqueda en tiempo real.
+- Paginación de productos.
+- Diseño responsive utilizando React Bootstrap.
+
+### Optimización
+
+- SEO mediante React Helmet.
+- Componentes estilizados con Styled Components.
+- Iconografía con React Icons.
+- Indicadores de carga (Spinner).
+- Manejo de errores durante la comunicación con Firebase.
+
+---
+
+## Instalación:
+
+Clonar el repositorio:
+
+```bash
+git clone URL_DEL_REPOSITORIO
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Ejecutar el proyecto:
+
+```bash
+npm run dev
+```
+
+---
+
+## Autor:
+
+**Ariana Pajon**
+
+Proyecto desarrollado como trabajo práctico final para el curso de React JS de Talento Tech.
+
+---

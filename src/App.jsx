@@ -174,7 +174,7 @@ const productosFiltrados = productos.filter((producto) =>
         .includes(busqueda.toLowerCase())
 );
 
-const productosPorPagina = 4;
+const productosPorPagina = 6;
 
 const indiceUltimoProducto = paginaActual * productosPorPagina;
 const indicePrimerProducto = indiceUltimoProducto - productosPorPagina;

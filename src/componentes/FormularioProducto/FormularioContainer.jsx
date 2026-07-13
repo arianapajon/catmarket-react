@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ButtonStyled } from "../../styles/ButtonStyled";
 
 export default function FormularioContainer({
     alAgregarProducto,
@@ -294,7 +295,7 @@ if (Number(datosForm.stock) < 0) {
 
                 </div>
 
-                <button
+                <ButtonStyled
                     type="submit"
                     disabled={subiendo}
                     onMouseEnter={() => setHoverBtn(true)}
@@ -324,7 +325,7 @@ if (Number(datosForm.stock) < 0) {
                             ? "Actualizar Producto"
                             : "Guardar Producto"}
 
-                </button>
+                </ButtonStyled>
 
             </form>
 
