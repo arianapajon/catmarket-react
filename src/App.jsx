@@ -8,8 +8,8 @@ import FormularioContainer from './componentes/FormularioProducto/FormularioCont
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-//import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
+import { Helmet } from "react-helmet";
 import {
     collection,
     getDocs,
@@ -20,12 +20,23 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import {
+    Modal,
+    Button,
+    Row,
+    Col,
+    Container
+} from "react-bootstrap";
 
 function App() {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [productoEditar, setProductoEditar] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
+    const [paginaActual, setPaginaActual] = useState(1);
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [productoAEliminar, setProductoAEliminar] = useState(null);
 
     const inicioRef = useRef(null);
     const productosRef = useRef(null);
@@ -99,32 +110,26 @@ function App() {
 
 };
 
-const eliminarProducto = async (id) => {
+const abrirModalEliminar = (id) => {
+    setProductoAEliminar(id);
+    setMostrarModal(true);
+};
 
-    const confirmar = window.confirm(
-        "¿Seguro que querés eliminar este producto?"
-    );
-
-    if (!confirmar) return;
-
+const eliminarProducto = async () => {
     try {
-
-        await deleteDoc(doc(db, "productos", id));
-
-        setProductos(
-            productos.filter((producto) => producto.id !== id)
-        );
-
-        alert("Producto eliminado.");
-
-    } catch (error) {
-
-        console.log(error);
-
-        alert("No se pudo eliminar.");
-
-    }
-
+    await deleteDoc(doc(db, "productos", productoAEliminar));
+    setProductos(
+        productos.filter(
+            (producto) => producto.id !== productoAEliminar
+        )
+    );
+    setMostrarModal(false);
+    setProductoAEliminar(null);
+    alert("Producto eliminado.");
+} catch (error) {
+    console.log(error);
+    alert("No se pudo eliminar.");
+}
 };
 
 const editarProducto = async (producto) => {
@@ -163,7 +168,40 @@ const editarProducto = async (producto) => {
 
 };
 
+const productosFiltrados = productos.filter((producto) =>
+    producto.nombre
+        .toLowerCase()
+        .includes(busqueda.toLowerCase())
+);
+
+const productosPorPagina = 4;
+
+const indiceUltimoProducto = paginaActual * productosPorPagina;
+const indicePrimerProducto = indiceUltimoProducto - productosPorPagina;
+
+const productosPaginados = productosFiltrados.slice(
+    indicePrimerProducto,
+    indiceUltimoProducto
+);
+
+const totalPaginas = Math.ceil(
+    productosFiltrados.length / productosPorPagina
+);
+
     return (
+        <>
+    <Helmet>
+
+        <title>
+            CatMarket | Tienda para gatos
+        </title>
+
+        <meta
+            name="description"
+            content="CatMarket - Tienda online de accesorios para gatos."
+        />
+
+    </Helmet>
     <Routes>
 
         <Route
@@ -178,24 +216,89 @@ const editarProducto = async (producto) => {
 
                     <Main>
 
-                        <div ref={inicioRef}>
-                            <FormularioContainer
-    alAgregarProducto={agregarProducto}
-    productoEditar={productoEditar}
-    setProductoEditar={setProductoEditar}
-    editarProducto={editarProducto}
-/>
-                        </div>
+                        
 
                         <div ref={productosRef}>
-                            <ItemListContainer
-    productos={productos}
-    cargando={cargando}
-    error={error}
-    eliminarProducto={eliminarProducto}
-    setProductoEditar={setProductoEditar}
-/>
-                        </div>
+    <Container>
+
+    <div
+        style={{
+            maxWidth: "500px",
+            margin: "0 auto 30px auto"
+        }}
+    >
+        <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={busqueda}
+            onChange={(e) => {
+                setBusqueda(e.target.value);
+                setPaginaActual(1);
+            }}
+            style={{
+                width: "100%",
+                padding: "14px",
+                borderRadius: "12px",
+                border: "1px solid #ccc",
+                fontSize: "16px",
+                boxSizing: "border-box"
+            }}
+        />
+    </div>
+
+    <Row>
+
+        <Col xs={12}>
+
+            <ItemListContainer
+                productos={productosPaginados}
+                cargando={cargando}
+                error={error}
+                abrirModalEliminar={abrirModalEliminar}
+                setProductoEditar={setProductoEditar}
+                esAdmin={false}
+            />
+
+        </Col>
+
+    </Row>
+
+    <div
+        style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+            marginTop: "30px"
+        }}
+    >
+        {[...Array(totalPaginas)].map((_, index) => (
+
+            <button
+                key={index}
+                onClick={() => setPaginaActual(index + 1)}
+                style={{
+                    padding: "10px 15px",
+                    borderRadius: "8px",
+                    border: "none",
+                    cursor: "pointer",
+                    background:
+                        paginaActual === index + 1
+                            ? "#4CAF50"
+                            : "#ddd",
+                    color:
+                        paginaActual === index + 1
+                            ? "#fff"
+                            : "#000"
+                }}
+            >
+                {index + 1}
+            </button>
+
+        ))}
+    </div>
+
+</Container>
+</div>
 
                     </Main>
 
@@ -220,15 +323,53 @@ const editarProducto = async (producto) => {
     path="/admin"
     element={
         <ProtectedRoute>
-            <Admin />
+            <Admin
+                productos={productos}
+                cargando={cargando}
+                error={error}
+                agregarProducto={agregarProducto}
+                eliminarProducto={eliminarProducto}
+                editarProducto={editarProducto}
+                productoEditar={productoEditar}
+                setProductoEditar={setProductoEditar}
+                abrirModalEliminar={abrirModalEliminar}
+            />
         </ProtectedRoute>
     }
 />
 
-        
-
     </Routes>
-);
+    <Modal
+    show={mostrarModal}
+    onHide={() => setMostrarModal(false)}
+    centered
+>
+    <Modal.Header closeButton>
+        <Modal.Title>Eliminar producto</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+        ¿Seguro que querés eliminar este producto?
+    </Modal.Body>
+
+    <Modal.Footer>
+        <Button
+            variant="secondary"
+            onClick={() => setMostrarModal(false)}
+        >
+            Cancelar
+        </Button>
+
+        <Button
+            variant="danger"
+            onClick={eliminarProducto}
+        >
+            Eliminar
+        </Button>
+    </Modal.Footer>
+</Modal>
+    </>
+    );
 }
 
 export default App;

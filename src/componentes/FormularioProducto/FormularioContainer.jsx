@@ -60,6 +60,21 @@ export default function FormularioContainer({
 
         e.preventDefault();
 
+        if (datosForm.nombre.trim() === "") {
+    alert("El nombre es obligatorio.");
+    return;
+}
+
+if (Number(datosForm.precio) <= 0) {
+    alert("El precio debe ser mayor a 0.");
+    return;
+}
+
+if (Number(datosForm.stock) < 0) {
+    alert("El stock no puede ser negativo.");
+    return;
+}
+
         if (!imagenFile && !productoEditar) {
             alert("Seleccioná una imagen.");
             return;
@@ -227,6 +242,7 @@ export default function FormularioContainer({
 
                         <input
                             type="number"
+                            min="1"
                             name="precio"
                             value={datosForm.precio}
                             onChange={manejarCambio}
@@ -244,6 +260,7 @@ export default function FormularioContainer({
 
                         <input
                             type="number"
+                            min="0"
                             name="stock"
                             value={datosForm.stock}
                             onChange={manejarCambio}

@@ -1,6 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { CartContext } from '../../context/CartContext';
 import { AuthContext } from "../../context/AuthContext";
+import {
+    FaShoppingCart,
+    FaHome,
+    FaBoxOpen,
+    FaUsers,
+    FaSignOutAlt
+} from "react-icons/fa";
 
 export default function Header({
     alHacerClicInicio,
@@ -73,7 +80,8 @@ export default function Header({
                 cursor: 'default'
                 }}
                 >
-                🛒 Carrito ({cart.length})
+                <FaShoppingCart />
+    {" "}Carrito ({cart.length})
                 </button>
                 <button
                     onClick={alHacerClicInicio}
@@ -86,7 +94,8 @@ export default function Header({
                             : {})
                     }}
                 >
-                    Inicio
+                    <FaHome />
+    {" "}Inicio
                 </button>
 
                 <button
@@ -100,7 +109,8 @@ export default function Header({
                             : {})
                     }}
                 >
-                    Productos
+                    <FaBoxOpen />
+    {" "}Productos
                 </button>
 
                 <button
@@ -114,7 +124,8 @@ export default function Header({
                             : {})
                     }}
                 >
-                    Equipo
+                    <FaUsers />
+    {" "}Equipo
                 </button>
                 {
     user ? (
@@ -132,7 +143,8 @@ export default function Header({
                 onClick={cerrarSesion}
                 style={estiloBoton}
             >
-                Cerrar sesión
+                <FaSignOutAlt />
+    {" "}Cerrar sesión
             </button>
         </>
     ) : null

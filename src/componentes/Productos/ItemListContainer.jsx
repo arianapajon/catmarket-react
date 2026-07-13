@@ -1,30 +1,34 @@
 import React, { useContext, useState } from 'react';
 import { CartContext } from '../../context/CartContext';
+import { FaShoppingCart, FaEdit, FaTrash } from "react-icons/fa";
+import { Spinner } from "react-bootstrap";
 
 export default function ItemListContainer({
     productos,
     cargando,
     error,
     eliminarProducto,
-    setProductoEditar
+    abrirModalEliminar,
+    setProductoEditar,
+    esAdmin = false,
+    mostrarCompra = true
 }) {
     const { addToCart } = useContext(CartContext);
     const [hoveredCard, setHoveredCard] = useState(null);
 
     if (cargando) {
-        return (
-            <h2
-                style={{
-                    textAlign: 'center',
-                    padding: '4rem',
-                    color: '#5f7546',
-                    fontFamily: "'Poppins', sans-serif"
-                }}
-            >
-                Cargando productos...
-            </h2>
-        );
-    }
+    return (
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "60px"
+            }}
+        >
+            <Spinner animation="border" variant="success" />
+        </div>
+    );
+}
 
     if (error) {
         return (
@@ -186,7 +190,7 @@ export default function ItemListContainer({
                                     ${prod.precio}
                                 </p>
 
-                                <button
+                                {mostrarCompra && (<button
                                     onClick={() => addToCart(prod)}
                                     style={{
                                         width: '100%',
@@ -207,9 +211,10 @@ export default function ItemListContainer({
                                             : '0 4px 10px rgba(94,156,45,0.12)'
                                     }}
                                 >
-                                    Comprar Producto
-                                </button>
-                                <button
+                                    <FaShoppingCart style={{ marginRight: "8px" }} />
+    Comprar Producto
+                                </button>)}
+                                {esAdmin && (<button
     onClick={() => setProductoEditar(prod)}
     style={{
         width: "100%",
@@ -223,10 +228,11 @@ export default function ItemListContainer({
         fontWeight: "700"
     }}
 >
+    <FaEdit style={{ marginRight: "8px" }} />
     Editar
-</button>
-                                <button
-    onClick={() => eliminarProducto(prod.id)}
+</button>)}
+                                {esAdmin && (<button
+    onClick={() => abrirModalEliminar(prod.id)}
     style={{
         width: "100%",
         marginTop: "10px",
@@ -239,8 +245,9 @@ export default function ItemListContainer({
         fontWeight: "700"
     }}
 >
+    <FaTrash style={{ marginRight: "8px" }} />
     Eliminar
-</button>
+</button>)}
                             </div>
                         </article>
                     );
