@@ -48,9 +48,25 @@ function Admin({
     style={{
         display: "flex",
         justifyContent: "center",
+        gap: "15px",
         marginBottom: "30px"
     }}
 >
+
+    <button
+        onClick={() => window.location.href = "/cupones"}
+        style={{
+            background: "#4CAF50",
+            color: "#fff",
+            border: "none",
+            padding: "12px 20px",
+            borderRadius: "10px",
+            cursor: "pointer",
+            fontWeight: "600"
+        }}
+    >
+        🎟️ Gestionar Cupones
+    </button>
     <Link
         to="/"
         style={{

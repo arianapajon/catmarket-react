@@ -11,7 +11,8 @@ export default function FormularioContainer({
     const [datosForm, setDatosForm] = useState({
         nombre: "",
         precio: "",
-        stock: ""
+        stock: "",
+        descripcion: ""
     });
 
     const [imagenFile, setImagenFile] = useState(null);
@@ -23,18 +24,20 @@ export default function FormularioContainer({
         if (productoEditar) {
 
             setDatosForm({
-                nombre: productoEditar.nombre,
-                precio: productoEditar.precio,
-                stock: productoEditar.stock || ""
-            });
+    nombre: productoEditar.nombre,
+    precio: productoEditar.precio,
+    stock: productoEditar.stock || "",
+    descripcion: productoEditar.descripcion || ""
+});
 
         } else {
 
             setDatosForm({
-                nombre: "",
-                precio: "",
-                stock: ""
-            });
+    nombre: "",
+    precio: "",
+    stock: "",
+    descripcion: ""
+});
 
         }
 
@@ -110,12 +113,13 @@ if (Number(datosForm.stock) < 0) {
             }
 
             const producto = {
-                nombre: datosForm.nombre,
-                precio: Number(datosForm.precio),
-                stock: Number(datosForm.stock),
-                imagen: imagenURL,
-                destacado: false
-            };
+    nombre: datosForm.nombre,
+    precio: Number(datosForm.precio),
+    stock: Number(datosForm.stock),
+    descripcion: datosForm.descripcion,
+    imagen: imagenURL,
+    destacado: false
+};
 
             if (productoEditar) {
 
@@ -133,10 +137,11 @@ if (Number(datosForm.stock) < 0) {
             }
 
             setDatosForm({
-                nombre: "",
-                precio: "",
-                stock: ""
-            });
+    nombre: "",
+    precio: "",
+    stock: "",
+    descripcion: ""
+});
 
             setImagenFile(null);
 
@@ -270,6 +275,25 @@ if (Number(datosForm.stock) < 0) {
                         />
 
                     </div>
+
+                    <div>
+
+    <label style={estilosLabel}>
+        Descripción
+    </label>
+
+    <textarea
+        name="descripcion"
+        value={datosForm.descripcion}
+        onChange={manejarCambio}
+        rows="5"
+        style={{
+            ...estilosInput,
+            resize: "vertical"
+        }}
+    />
+
+</div>
 
                 </div>
 

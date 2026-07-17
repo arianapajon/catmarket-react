@@ -27,6 +27,8 @@ import {
     Col,
     Container
 } from "react-bootstrap";
+import DetalleProducto from "./pages/DetalleProducto";
+import Cupones from "./pages/Cupones";
 
 function App() {
     const [productos, setProductos] = useState([]);
@@ -143,12 +145,13 @@ const editarProducto = async (producto) => {
         );
 
         await updateDoc(referencia, {
-            nombre: producto.nombre,
-            precio: producto.precio,
-            stock: producto.stock,
-            imagen: producto.imagen,
-            destacado: producto.destacado
-        });
+    nombre: producto.nombre,
+    precio: producto.precio,
+    stock: producto.stock,
+    descripcion: producto.descripcion,
+    imagen: producto.imagen,
+    destacado: producto.destacado
+});
 
         setProductos(
             productos.map((p) =>
@@ -341,6 +344,34 @@ const totalPaginas = Math.ceil(
                 abrirModalEliminar={abrirModalEliminar}
             />
         </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/cupones"
+    element={
+        <ProtectedRoute>
+            <Cupones />
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/producto/:id"
+    element={
+        <>
+            <Header
+                alHacerClicInicio={() => scrollSeccion(inicioRef)}
+                alHacerClicProductos={() => scrollSeccion(productosRef)}
+                alHacerClicEquipo={() => scrollSeccion(equipoRef)}
+            />
+
+            <Main>
+                <DetalleProducto />
+            </Main>
+
+            <Footer />
+        </>
     }
 />
 

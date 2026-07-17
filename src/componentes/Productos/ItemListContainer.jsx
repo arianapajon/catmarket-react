@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { CartContext } from '../../context/CartContext';
 import { FaShoppingCart, FaEdit, FaTrash } from "react-icons/fa";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function ItemListContainer({
     productos,
@@ -189,6 +190,19 @@ export default function ItemListContainer({
                                 >
                                     ${prod.precio}
                                 </p>
+
+                                <Link
+    to={`/producto/${prod.id}`}
+    style={{
+        display: "inline-block",
+        marginBottom: "15px",
+        color: "#4CAF50",
+        fontWeight: "bold",
+        textDecoration: "none"
+    }}
+>
+    Ver detalle
+</Link>
 
                                 {mostrarCompra && (<button
                                     onClick={() => addToCart(prod)}

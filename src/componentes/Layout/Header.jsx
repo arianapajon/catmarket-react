@@ -6,6 +6,7 @@ import {
     FaHome,
     FaBoxOpen,
     FaUsers,
+    FaTools,
     FaSignOutAlt
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -135,6 +136,22 @@ export default function Header({
                         {" "}
                         Equipo
                     </button>
+
+                    {user && (
+    <Link
+        to="/admin"
+        style={{
+            ...estiloBoton,
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center"
+        }}
+    >
+        <FaTools />
+        {" "}
+        Gestión
+    </Link>
+)}
 
                     {
                         user ? (
