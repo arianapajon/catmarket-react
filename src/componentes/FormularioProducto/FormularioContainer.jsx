@@ -9,11 +9,13 @@ export default function FormularioContainer({
 }) {
 
     const [datosForm, setDatosForm] = useState({
-        nombre: "",
-        precio: "",
-        stock: "",
-        descripcion: ""
-    });
+    nombre: "",
+    precio: "",
+    stock: "",
+    descripcion: "",
+    categoria: "",
+    destacado: false
+});
 
     const [imagenFile, setImagenFile] = useState(null);
     const [subiendo, setSubiendo] = useState(false);
@@ -27,7 +29,9 @@ export default function FormularioContainer({
     nombre: productoEditar.nombre,
     precio: productoEditar.precio,
     stock: productoEditar.stock || "",
-    descripcion: productoEditar.descripcion || ""
+    descripcion: productoEditar.descripcion || "",
+    categoria: productoEditar.categoria || "",
+    destacado: productoEditar.destacado || false
 });
 
         } else {
@@ -36,7 +40,9 @@ export default function FormularioContainer({
     nombre: "",
     precio: "",
     stock: "",
-    descripcion: ""
+    descripcion: "",
+    categoria: "",
+    destacado: false
 });
 
         }
@@ -44,15 +50,12 @@ export default function FormularioContainer({
     }, [productoEditar]);
 
     const manejarCambio = (e) => {
-
-        const { name, value } = e.target;
-
-        setDatosForm({
-            ...datosForm,
-            [name]: value
-        });
-
-    };
+    const { name, value, type, checked } = e.target;
+    setDatosForm({
+        ...datosForm,
+        [name]: type === "checkbox" ? checked : value
+    });
+};
 
     const manejarImagen = (e) => {
 
@@ -117,8 +120,9 @@ if (Number(datosForm.stock) < 0) {
     precio: Number(datosForm.precio),
     stock: Number(datosForm.stock),
     descripcion: datosForm.descripcion,
-    imagen: imagenURL,
-    destacado: false
+    categoria: datosForm.categoria,
+    destacado: datosForm.destacado,
+    imagen: imagenURL
 };
 
             if (productoEditar) {
@@ -140,7 +144,9 @@ if (Number(datosForm.stock) < 0) {
     nombre: "",
     precio: "",
     stock: "",
-    descripcion: ""
+    descripcion: "",
+    categoria: "",
+    destacado: false
 });
 
             setImagenFile(null);
@@ -273,11 +279,9 @@ if (Number(datosForm.stock) < 0) {
                             required
                             style={estilosInput}
                         />
-
                     </div>
 
                     <div>
-
     <label style={estilosLabel}>
         Descripción
     </label>
@@ -293,6 +297,46 @@ if (Number(datosForm.stock) < 0) {
         }}
     />
 
+</div>
+
+<div>
+
+    <label style={estilosLabel}>
+        Categoría
+    </label>
+
+    <select
+        name="categoria"
+        value={datosForm.categoria}
+        onChange={manejarCambio}
+        required
+        style={estilosInput}
+    >
+        <option value="">Seleccionar categoría</option>
+        <option value="Juguetes">Juguetes</option>
+        <option value="Rascadores">Rascadores y Camas</option>
+        <option value="Accesorios">Accesorios</option>
+    </select>
+
+</div>
+
+<div
+    style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "10px"
+    }}
+>
+
+    <input
+        type="checkbox"
+        name="destacado"
+        checked={datosForm.destacado}
+        onChange={manejarCambio}
+    />
+    <label>
+        Mostrar en destacados
+    </label>
 </div>
 
                 </div>
