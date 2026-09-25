@@ -87,11 +87,14 @@ function DetalleProducto() {
             style={{
                 display: "flex",
                 justifyContent: "center",
-                padding: "50px 20px"
+                padding: "50px 20px",
+                width: "100%",
+                boxSizing: "border-box"
             }}
         >
 
             <div
+                className="detalle-producto"
                 style={{
                     width: "100%",
                     maxWidth: "1050px",
@@ -102,15 +105,22 @@ function DetalleProducto() {
                     display: "flex",
                     flexWrap: "wrap",
                     gap: "40px",
-                    alignItems: "center"
+                    alignItems: "center",
+                    boxSizing: "border-box",
+                    overflow: "hidden"
                 }}
             >
 
+                {/* IMAGEN DEL PRODUCTO */}
+
                 <div
+                    className="detalle-imagen"
                     style={{
-                        flex: "1",
-                        minWidth: "300px",
-                        textAlign: "center"
+                        flex: "1 1 0",
+                        minWidth: "0",
+                        width: "100%",
+                        textAlign: "center",
+                        boxSizing: "border-box"
                     }}
                 >
 
@@ -120,24 +130,34 @@ function DetalleProducto() {
                         style={{
                             width: "100%",
                             maxWidth: "420px",
+                            height: "auto",
                             borderRadius: "20px",
-                            boxShadow: "0 10px 25px rgba(0,0,0,.15)"
+                            boxShadow: "0 10px 25px rgba(0,0,0,.15)",
+                            display: "block",
+                            margin: "0 auto",
+                            objectFit: "contain"
                         }}
                     />
 
                 </div>
 
+                {/* INFORMACIÓN DEL PRODUCTO */}
+
                 <div
+                    className="detalle-info"
                     style={{
-                        flex: "1",
-                        minWidth: "300px"
+                        flex: "1 1 0",
+                        minWidth: "0",
+                        width: "100%",
+                        boxSizing: "border-box"
                     }}
                 >
 
                     <h1
                         style={{
                             color: "#4f772d",
-                            marginBottom: "15px"
+                            marginBottom: "15px",
+                            overflowWrap: "break-word"
                         }}
                     >
                         {producto.nombre}
@@ -160,7 +180,10 @@ function DetalleProducto() {
                             borderRadius: "15px",
                             lineHeight: "1.7",
                             color: "#555",
-                            marginBottom: "20px"
+                            marginBottom: "20px",
+                            width: "100%",
+                            boxSizing: "border-box",
+                            overflowWrap: "break-word"
                         }}
                     >
                         {producto.descripcion || "Este producto todavía no tiene descripción."}
@@ -180,6 +203,8 @@ function DetalleProducto() {
                         onClick={() => addToCart(producto)}
                         style={{
                             width: "100%",
+                            maxWidth: "100%",
+                            boxSizing: "border-box",
                             padding: "15px",
                             border: "none",
                             borderRadius: "15px",
@@ -199,13 +224,16 @@ function DetalleProducto() {
                         to="/"
                         style={{
                             display: "block",
+                            width: "100%",
+                            boxSizing: "border-box",
                             textAlign: "center",
                             padding: "15px",
                             borderRadius: "15px",
                             textDecoration: "none",
                             background: "#e9ecef",
                             color: "#333",
-                            fontWeight: "600"
+                            fontWeight: "600",
+                            overflowWrap: "break-word"
                         }}
                     >
                         <FaArrowLeft style={{ marginRight: "8px" }} />

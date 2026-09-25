@@ -316,8 +316,8 @@ button {
    ============================================ */
 
 .promo {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent-dark));
-    padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent-dark));
+  padding: 2.5rem 2rem;
 }
 
 .promo-inner {
@@ -330,12 +330,12 @@ button {
 }
 
 .promo-image img {
-    width: 100%;
-    max-width: 320px;
-    border-radius: var(--radius-lg);
-    display: block;
-    margin: 0 auto;
-    filter: drop-shadow(0 20px 30px rgba(74, 59, 58, 0.25));
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--radius-lg);
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 20px 30px rgba(74, 59, 58, 0.25));
 }
 
 .promo-content {
@@ -565,7 +565,7 @@ button {
 .nav-link,
 .btn-primary,
 .signature-card {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /* ============================================
@@ -697,5 +697,117 @@ button {
 
   .main-content {
     padding: 2.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .detalle-producto {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 25px !important;
+    padding: 20px !important;
+    align-items: stretch !important;
+    min-width: 300px;
+  }
+
+  .detalle-imagen,
+  .detalle-info {
+    width: 100% !important;
+    flex: none !important;
+    min-width: 0 !important;
+  }
+
+  .detalle-imagen img {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: auto !important;
+  }
+
+  .detalle-info h1 {
+    font-size: 1.2rem !important;
+    line-height: 1.2 !important;
+    margin-top: 0 !important;
+  }
+
+  .detalle-info h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .detalle-info p {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 15px;
+  }
+}
+
+.hero-content {
+  animation: heroContentIn 0.9s ease-out both;
+}
+
+.hero-image-wrap {
+  animation: heroImageIn 1s ease-out 0.15s both;
+}
+
+.hero-image-wrap img {
+  animation: heroFloat 4s ease-in-out 1.2s infinite;
+}
+
+.hero-blob {
+  animation: heroBlob 5s ease-in-out infinite;
+}
+
+@keyframes heroContentIn {
+  from {
+    opacity: 0;
+    transform: translateX(-35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes heroImageIn {
+  from {
+    opacity: 0;
+    transform: translateX(35px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+@keyframes heroBlob {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-image-wrap,
+  .hero-image-wrap img,
+  .hero-blob {
+    animation: none;
   }
 }
