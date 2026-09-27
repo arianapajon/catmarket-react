@@ -5,18 +5,27 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
 
     const [cart, setCart] = useState([]);
+    const [notificacion, setNotificacion] = useState(null);
 
     const addToCart = (producto) => {
-    setCart([...cart, producto]);
-};
+        setCart((carritoActual) => [...carritoActual, producto]);
+        setNotificacion({
+            id: Date.now(),
+            mensaje: `${producto.nombre} se agregó al carrito.`
+        });
+    };
 
-const removeFromCart = (id) => {
-    setCart(cart.filter((producto) => producto.id !== id));
-};
+    const cerrarNotificacion = () => {
+        setNotificacion(null);
+    };
 
-const clearCart = () => {
-    setCart([]);
-};
+    const removeFromCart = (id) => {
+        setCart((carritoActual) => carritoActual.filter((producto) => producto.id !== id));
+    };
+
+    const clearCart = () => {
+        setCart([]);
+    };
 
     return (
         <CartContext.Provider
@@ -25,7 +34,9 @@ const clearCart = () => {
                 setCart,
                 addToCart,
                 removeFromCart,
-                clearCart
+                clearCart,
+                notificacion,
+                cerrarNotificacion
             }}
         >
             {children}

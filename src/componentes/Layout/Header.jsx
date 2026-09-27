@@ -12,14 +12,16 @@ import {
     FaTimes
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Toast, ToastContainer } from "react-bootstrap";
 
 export default function Header() {
 
     const {
         cart,
         removeFromCart,
-        clearCart
+        clearCart,
+        notificacion,
+        cerrarNotificacion
     } = useContext(CartContext);
 
     const { user, cerrarSesion } = useContext(AuthContext);
@@ -79,11 +81,21 @@ export default function Header() {
 
                         <li>
                             <Link
-                                to="/#equipo"
+                                to="/conocenos"
                                 className="nav-link"
                                 onClick={cerrarMenu}
                             >
-                                <FaUsers /> Equipo
+                                <FaUsers /> Conocenos
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link
+                                to="/contacto"
+                                className="nav-link"
+                                onClick={cerrarMenu}
+                            >
+                                Contacto
                             </Link>
                         </li>
 
@@ -268,6 +280,24 @@ export default function Header() {
                 </Modal.Footer>
 
             </Modal>
+
+            <ToastContainer position="top-end" className="cart-toast-container">
+                <Toast
+                    show={Boolean(notificacion)}
+                    onClose={cerrarNotificacion}
+                    delay={2800}
+                    autohide
+                    bg="light"
+                >
+                    <Toast.Header>
+                        <FaShoppingCart className="me-2" />
+                        <strong className="me-auto">Carrito actualizado</strong>
+                    </Toast.Header>
+                    <Toast.Body>
+                        <span className="cart-toast-check">✓</span> {notificacion?.mensaje}
+                    </Toast.Body>
+                </Toast>
+            </ToastContainer>
 
         </>
     );

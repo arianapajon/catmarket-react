@@ -23,6 +23,8 @@ import Main from './componentes/Layout/Main';
 import Footer from './componentes/Layout/Footer';
 import DetalleProducto from "./pages/DetalleProducto";
 import Cupones from "./pages/Cupones";
+import Conocenos from "./pages/Conocenos.jsx";
+import Contacto from "./pages/Contacto.jsx";
 import ScrollToTop from "./componentes/ScrollToTop";
 
 function App() {
@@ -194,6 +196,16 @@ function App() {
                             error={error}
                         />
                     }
+                />
+
+                <Route
+                    path="/conocenos"
+                    element={<Conocenos />}
+                />
+
+                <Route
+                    path="/contacto"
+                    element={<Contacto />}
                 />
 
                 <Route

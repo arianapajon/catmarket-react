@@ -128,9 +128,7 @@ export default function Productos({ productos, cargando, error }) {
                 </Container>
             </Main>
 
-            <div id="equipo">
-                <Footer />
-            </div>
+            <Footer />
         </>
     );
 }

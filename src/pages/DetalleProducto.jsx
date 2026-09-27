@@ -13,6 +13,13 @@ function DetalleProducto() {
 
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
+    const [agregado, setAgregado] = useState(false);
+
+    const agregarProductoAlCarrito = () => {
+        addToCart(producto);
+        setAgregado(true);
+        setTimeout(() => setAgregado(false), 1400);
+    };
 
     useEffect(() => {
 
@@ -200,7 +207,8 @@ function DetalleProducto() {
                     </p>
 
                     <button
-                        onClick={() => addToCart(producto)}
+                        onClick={agregarProductoAlCarrito}
+                        className={agregado ? "detail-cart-added" : ""}
                         style={{
                             width: "100%",
                             maxWidth: "100%",
@@ -217,7 +225,7 @@ function DetalleProducto() {
                         }}
                     >
                         <FaShoppingCart style={{ marginRight: "8px" }} />
-                        Agregar al carrito
+                        {agregado ? "✓ ¡Agregado al carrito!" : "Agregar al carrito"}
                     </button>
 
                     <Link

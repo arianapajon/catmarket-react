@@ -18,6 +18,18 @@ export default function ItemListContainer({
 }) {
     const { addToCart } = useContext(CartContext);
     const [hoveredCard, setHoveredCard] = useState(null);
+    const [productoAgregado, setProductoAgregado] = useState(null);
+
+    const comprarProducto = (producto) => {
+        addToCart(producto);
+        setProductoAgregado(producto.id);
+
+        setTimeout(() => {
+            setProductoAgregado((idActual) =>
+                idActual === producto.id ? null : idActual
+            );
+        }, 1400);
+    };
 
     if (cargando) {
         return (
@@ -159,7 +171,8 @@ export default function ItemListContainer({
 
                                 {mostrarCompra && (
                                     <button
-                                        onClick={() => addToCart(prod)}
+                                        onClick={() => comprarProducto(prod)}
+                                        className={productoAgregado === prod.id ? "buy-button-added" : ""}
                                         style={{
                                             width: '100%',
                                             padding: '1rem',
@@ -176,7 +189,7 @@ export default function ItemListContainer({
                                         }}
                                     >
                                         <FaShoppingCart style={{ marginRight: "8px" }} />
-                                        Comprar Producto
+                                        {productoAgregado === prod.id ? "✓ ¡Agregado!" : "Comprar Producto"}
                                     </button>
                                 )}
 
