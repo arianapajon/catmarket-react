@@ -812,6 +812,7 @@ button {
   border-radius: var(--radius-lg);
   padding: 2rem;
   box-shadow: var(--shadow-card);
+  text-align:left;
 }
 
 .contact-info-item {
